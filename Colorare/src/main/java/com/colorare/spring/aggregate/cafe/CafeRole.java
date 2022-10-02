@@ -1,0 +1,100 @@
+package com.colorare.spring.aggregate.cafe;
+
+
+import com.colorare.spring.aggregate.Entity;
+import com.colorare.spring.shared.NameValue;
+import com.colorare.spring.shared.NameValueList;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class CafeRole extends Entity {
+	//
+	private static final int MINIMUM_NAME_LENGTH =  3;
+	private static final int MINIMUM_INTRO_LENGTH =  10;
+
+	private String name;
+	private String intro;
+	private long foundationTime;
+
+	public CafeRole(String id) {
+		//
+		super(id);
+	}
+
+	public CafeRole(String name, String intro) {
+		//
+		super();
+		this.name = name;
+		this.intro = intro;
+		this.foundationTime = System.currentTimeMillis();
+	}
+
+	@Override
+	public String toString() {
+		//
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("Colorare Role Id:").append(id);
+		builder.append(", name:").append(name);
+		builder.append(", intro:").append(intro);
+		builder.append(", foundation day:").append(foundationTime);
+
+		return builder.toString();
+	}
+
+	public void checkValidation() {
+		//
+		checkNameValidation(name);
+		checkIntroValidation(intro);
+	}
+
+	private void checkNameValidation(String name) {
+		//
+		if (name.length() < CafeRole.MINIMUM_NAME_LENGTH) {
+			throw new IllegalArgumentException("\t > Name should be longer than " + CafeRole.MINIMUM_NAME_LENGTH);
+		}
+	}
+
+	private void checkIntroValidation(String intro) {
+		//
+		if (intro.length() < CafeRole.MINIMUM_INTRO_LENGTH) {
+			throw new IllegalArgumentException("\t > Intro should be longer than " + CafeRole.MINIMUM_INTRO_LENGTH);
+		}
+	}
+
+	public void modifyValues(NameValueList nameValues) {
+		//
+		for (NameValue nameValue : nameValues.getNameValues()) {
+			String value = nameValue.getValue();
+			switch (nameValue.getName()) {
+				case "name":
+					checkNameValidation(value);
+					this.name = value;
+					break;
+				case "intro":
+					checkIntroValidation(value);
+					this.intro = value;
+					break;
+			}
+		}
+	}
+
+	public static CafeRole sample() {
+		//
+		String name = "JavaColorare Role";
+		String intro = "Colorare Role to the Java island.";
+
+		return new CafeRole(name, intro);
+	}
+
+	public static void main(String[] args) {
+		//
+		System.out.println(sample().toString());
+	}
+}
+
