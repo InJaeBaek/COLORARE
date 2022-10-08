@@ -20,6 +20,12 @@ public class Membership extends Entity {
 	private RoleInCafe role;
 	private String joinDate;
 
+    
+	    
+   	public String getTestRoleId() {
+        		return roleId;
+    	}
+
 	public Membership(String id) {
 		
 		super(id);
